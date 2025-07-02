@@ -25,7 +25,7 @@ public class SimCardActivatorStepDefinitions {
     private String iccid;
     private String customerEmail;
     private long simId = 0;
-    private final String BASE_URL = "http://localhost:8080";
+    private final String baseUrl = "http://localhost:8080";
 
     @Given("the SIM card ICCID is {string} and email is {string}")
     public void theSimCardICCIDAndEmail(String iccid, String email) {
@@ -44,7 +44,7 @@ public class SimCardActivatorStepDefinitions {
 
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(BASE_URL + "/sim/activate", entity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/sim/activate", entity, String.class);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
@@ -53,7 +53,7 @@ public class SimCardActivatorStepDefinitions {
 
     @Then("the SIM card should be marked as activated in the system with ID {int}")
     public void simCardShouldBeActivated(int expectedId) {
-        ResponseEntity<Map> response = restTemplate.getForEntity(BASE_URL + "/sim/query?simCardId=" + expectedId, Map.class);
+        ResponseEntity<Map> response = restTemplate.getForEntity(baseUrl + "/sim/query?simCardId=" + expectedId, Map.class);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(iccid, response.getBody().get("iccid"));
@@ -63,7 +63,7 @@ public class SimCardActivatorStepDefinitions {
 
     @Then("the SIM card should be marked as not activated in the system with ID {int}")
     public void simCardShouldNotBeActivated(int expectedId) {
-        ResponseEntity<Map> response = restTemplate.getForEntity(BASE_URL + "/sim/query?simCardId=" + expectedId, Map.class);
+        ResponseEntity<Map> response = restTemplate.getForEntity(baseUrl + "/sim/query?simCardId=" + expectedId, Map.class);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(iccid, response.getBody().get("iccid"));
